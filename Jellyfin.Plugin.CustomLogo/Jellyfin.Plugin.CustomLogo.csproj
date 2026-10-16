@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Build for the current Jellyfin (12.x, .NET 10):
+        dotnet build -c Release
+    Build for Jellyfin 10.11.x (.NET 9):
+        dotnet build -c Release -p:JellyfinVersion=10.11.3
+
+    Reference the lowest version of a release line so one build runs on every
+    server of that line (12.0, 12.1, 12.2, ...).
+  -->
+  <PropertyGroup>
+    <JellyfinVersion Condition="'$(JellyfinVersion)' == ''">12.0.0</JellyfinVersion>
+    <TargetFramework Condition="$(JellyfinVersion.StartsWith('10.'))">net9.0</TargetFramework>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net10.0</TargetFramework>
+
+    <!-- Fourth part of the version = Jellyfin major the build is for (12 or 10). -->
+    <PluginVersion Condition="'$(PluginVersion)' == ''">2.0.0</PluginVersion>
+    <AbiMajor>$(JellyfinVersion.Split('.')[0])</AbiMajor>
+    <AssemblyVersion>$(PluginVersion).$(AbiMajor)</AssemblyVersion>
+    <FileVersion>$(PluginVersion).$(AbiMajor)</FileVersion>
+
+    <RootNamespace>Jellyfin.Plugin.CustomLogo</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The server ships these assemblies itself; never copy them into the plugin folder. -->
+    <PackageReference Include="Jellyfin.Controller" Version="$(JellyfinVersion)" ExcludeAssets="runtime" />
+    <PackageReference Include="Jellyfin.Model" Version="$(JellyfinVersion)" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- ASP.NET Core (controllers, middleware) comes from the shared framework the server runs on. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Configuration\configPage.html" />
+    <None Remove="Configuration\configPage.js" />
+    <EmbeddedResource Include="Configuration\configPage.html" />
+    <EmbeddedResource Include="Configuration\configPage.js" />
+  </ItemGroup>
+
+</Project>

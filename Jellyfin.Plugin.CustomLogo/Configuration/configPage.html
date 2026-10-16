@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Custom Logo</title>
+</head>
+<body>
+    <div id="customLogoConfigPage" data-role="page" class="page type-interior pluginConfigurationPage"
+         data-require="emby-input,emby-button,emby-checkbox"
+         data-controller="__plugin/CustomLogoJs">
+        <div data-role="content">
+            <div class="content-primary">
+                <style>
+                    #customLogoConfigPage .clSlot { display: flex; flex-wrap: wrap; gap: 1.5em; align-items: center; padding: 1em 0; border-bottom: 1px solid rgba(128,128,128,.25); }
+                    #customLogoConfigPage .clSlot:last-of-type { border-bottom: 0; }
+                    #customLogoConfigPage .clPreview { flex: 0 0 auto; width: 16em; height: 6em; display: flex; align-items: center; justify-content: center; border-radius: .3em; background: repeating-conic-gradient(rgba(128,128,128,.25) 0% 25%, transparent 0% 50%) 50% / 1.2em 1.2em; }
+                    #customLogoConfigPage .clPreview.square { width: 6em; }
+                    #customLogoConfigPage .clPreview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+                    #customLogoConfigPage .clPreview .clEmpty { opacity: .6; font-size: .9em; text-align: center; padding: 0 .5em; }
+                    #customLogoConfigPage .clInfo { flex: 1 1 18em; }
+                    #customLogoConfigPage .clInfo h3 { margin: 0 0 .25em; }
+                    #customLogoConfigPage .clInfo p { margin: 0 0 .6em; opacity: .8; }
+                    #customLogoConfigPage .clButtons { display: flex; gap: .5em; flex-wrap: wrap; }
+                    #customLogoConfigPage .clButtons .emby-button { margin: 0; }
+                    #customLogoConfigPage input[type=file] { display: none; }
+                </style>
+
+                <div class="verticalSection">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">Custom Logo</h2>
+                    </div>
+                    <p>Upload your own images to replace the Jellyfin logos in the web client.
+                       PNG, JPEG, GIF, WebP or ICO, up to 10&nbsp;MB. Transparent PNGs look best.</p>
+                </div>
+
+                <div class="verticalSection">
+                    <div class="clSlot" data-slot="Banner">
+                        <div class="clPreview"></div>
+                        <div class="clInfo">
+                            <h3>Banner</h3>
+                            <p>Wide logo in the page header and on the loading screen. Recommended about 1000&nbsp;×&nbsp;250&nbsp;px.</p>
+                            <div class="clButtons">
+                                <input type="file" accept="image/png,image/jpeg,image/gif,image/webp">
+                                <button is="emby-button" type="button" class="raised button-submit btnUpload"><span>Upload</span></button>
+                                <button is="emby-button" type="button" class="raised btnRemove"><span>Remove</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clSlot" data-slot="Icon">
+                        <div class="clPreview square"></div>
+                        <div class="clInfo">
+                            <h3>Icon</h3>
+                            <p>Square logo in the side menu, the server button, TV layout and screensaver. Recommended 512&nbsp;×&nbsp;512&nbsp;px.</p>
+                            <div class="clButtons">
+                                <input type="file" accept="image/png,image/jpeg,image/gif,image/webp">
+                                <button is="emby-button" type="button" class="raised button-submit btnUpload"><span>Upload</span></button>
+                                <button is="emby-button" type="button" class="raised btnRemove"><span>Remove</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clSlot" data-slot="Favicon">
+                        <div class="clPreview square"></div>
+                        <div class="clInfo">
+                            <h3>Favicon</h3>
+                            <p>Browser tab and home-screen icon. A square PNG (e.g. 512&nbsp;×&nbsp;512&nbsp;px) or an ICO file.</p>
+                            <div class="clButtons">
+                                <input type="file" accept="image/png,image/x-icon,image/vnd.microsoft.icon,.ico">
+                                <button is="emby-button" type="button" class="raised button-submit btnUpload"><span>Upload</span></button>
+                                <button is="emby-button" type="button" class="raised btnRemove"><span>Remove</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="customLogoConfigForm verticalSection">
+                    <h2 class="sectionTitle">Options</h2>
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkEnabled">
+                            <span>Replace the Jellyfin logos</span>
+                        </label>
+                        <div class="fieldDescription checkboxFieldDescription">Turn off to show the stock logos again without deleting your uploads.</div>
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkIconAsBanner">
+                            <span>Use the icon where no banner is uploaded</span>
+                        </label>
+                    </div>
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkIconAsFavicon">
+                            <span>Use the icon as favicon where no favicon is uploaded</span>
+                        </label>
+                    </div>
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block"><span>Save</span></button>
+                    </div>
+                    <div class="fieldDescription" style="margin-top:1em">
+                        After changing a logo, reload the web client. If the old logo still shows, clear the browser cache once
+                        (Ctrl&nbsp;+&nbsp;F5, or Cmd&nbsp;+&nbsp;Shift&nbsp;+&nbsp;R on macOS). Native apps may need to be restarted.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
