@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+
+      - name: Determine version
+        id: v
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          VERSION="${TAG#v}"
+          VERSION="$(echo "$VERSION" | cut -d. -f1-3)"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build and package
+        env:
+          CHANGELOG: ${{ github.event.release.body }}
+        run: |
+          for JF in 12.0.0 10.11.0; do
+            dotnet publish Jellyfin.Plugin.CustomLogo/Jellyfin.Plugin.CustomLogo.csproj \
+              -c Release -o "out/$JF" \
+              -p:JellyfinVersion=$JF -p:PluginVersion=${{ steps.v.outputs.version }}
+            python3 scripts/package.py --bin "out/$JF" --jellyfin $JF \
+              --version ${{ steps.v.outputs.version }} \
+              --repo "${GITHUB_REPOSITORY}" --tag "${{ steps.v.outputs.tag }}" \
+              --changelog "${CHANGELOG:-Release ${{ steps.v.outputs.version }}}"
+          done
+
+      - name: Attach zips to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.v.outputs.tag }}
+          files: dist/*.zip
+
+      - name: Publish manifest.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          git commit -m "Update manifest for ${{ steps.v.outputs.tag }}" || exit 0
+          git push origin HEAD:${{ github.event.repository.default_branch }}
