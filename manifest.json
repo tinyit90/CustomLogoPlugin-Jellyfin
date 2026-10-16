@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "guid": "e5d0a647-75d1-4ef4-8c81-8b3d077b9b1e",
+    "name": "Custom Logo",
+    "description": "Replace the Jellyfin logos in the web client with your own images.",
+    "overview": "Custom Logo Plugin for Jellyfin",
+    "owner": "tinyit90",
+    "category": "General",
+    "versions": [
+      {
+        "version": "2.0.0.12",
+        "changelog": "Initial release / bugfixes",
+        "targetAbi": "10.9.0.0",
+        "sourceUrl": "https://github.com/tinyit90/CustomLogoPlugin-Jellyfin",
+        "checksum": "DEIN_MD5_ODER_SHA256_HASH_DER_ZIP",
+        "status": "Active",
+        "timestamp": "2026-10-16T20:00:00Z",
+        "downloadUrl": "https://github.com/tinyit90/CustomLogoPlugin-Jellyfin/releases/download/v2.0.0.12/CustomLogo.zip"
+      }
+    ]
+  }
+]
