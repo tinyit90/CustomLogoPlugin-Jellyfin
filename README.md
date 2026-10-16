@@ -27,8 +27,8 @@ When installing from the repository, Jellyfin automatically picks the right buil
 1. Dashboard → **Plugins** → **Repositories** → **+**
 2. Name: `Custom Logo`, URL:
    ```
-   https://raw.githubusercontent.com/<YOUR-GITHUB-NAME>/CustomLogoPlugin/main/manifest.json
-   ```
+   https://raw.githubusercontent.com/tinyit90/CustomLogoPlugin-Jellyfin/main/manifest.json   ```
+   
 3. **Catalog** → **Custom Logo** → **Install**, then restart Jellyfin.
 
 ### Manual installation
